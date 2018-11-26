@@ -13,6 +13,7 @@ page 页数
 q = Queue()
 sql = set()
 waf = set()
+host = []
 def getHtml(wd,page):
 	html = ''
 	header = {
@@ -35,6 +36,10 @@ def html2href(html):
 			a = requests.get(i.get('href'),timeout=0.5).url
 			#根据情况更改
 			if "php" in a and "baidu" not in a:
+				h = a[:a.find('/',8)]
+				if h in host:
+					continue
+				host.append(h)
 				url.add(a)
 		except:
 			continue
