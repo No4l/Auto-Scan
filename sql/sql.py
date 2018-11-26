@@ -95,15 +95,15 @@ def scan():
 
 def main():
 	for i in range(1,5):
-		search('inurl:.php?id=256',i)
+		search('inurl:.php?id=189',i)
 		for i in range(10):
 			t = threading.Thread(target=scan)
 			t.start()
 	print("[*]Scan End!!!")
-	print("[*]Find "+len(sql))
+	print("[*]Find "+str(len(sql)))
 	for i in sql:
 		print('[!]'+i)
-	print("[-]Waf May Be Active "+len(waf))
+	print("[-]Waf May Be Active "+str(len(waf)))
 	for i in waf:
 		print('[!]'+i)
 
