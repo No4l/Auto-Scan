@@ -2,7 +2,7 @@
 #get href
 from bs4 import BeautifulSoup
 import requests
-
+import sys
 '''
 wd 关键词
 page 页数
@@ -36,4 +36,21 @@ def html2href(html):
 			continue
 	return href
 
-html2href(getHtml('inurl:.php?id=17',9))
+'''
+输出提示信息
+'''
+def Usage():
+	print("[-]Example:"+sys.argv[0]+" <keyword> <page>")
+
+
+def main():
+	try:
+		keyword = sys.argv[1]
+		page = int(sys.argv[2])
+	except:
+		Usage()
+		exit()
+	html2href(getHtml(keyword,page))
+
+if __name__ == '__main__':
+	main()

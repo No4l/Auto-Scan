@@ -59,11 +59,11 @@ def search(wd,page):
 def scan():
 	while not q.empty():
 		url = q.get()
-		print('[+]Scan',url)
+		print('[+]Scan '+url)
 		try:
 			#分割参数
 			prase = url.split('php?')[1]
-			params = prase.split('&') 
+			params = prase.split('&')
 			origin = len(requests.get(url,timeout=1).text)
 		except:
 			continue
@@ -82,31 +82,31 @@ def scan():
 				continue
 			if  sql_false != origin:
 				if sql_true == origin:
-					print('[*]Find Sql Injection!!',url)
+					print('[*]Find Sql Injection!! '+url)
 					sql.add(url)
 				else:
 					c = url.replace(i,i+'a')
 					now = len(requests.get(c,timeout=1).text)
 					if c != origin:
-						print('[-]May Waf Is Active!!',url)
+						print('[-]May Waf Is Active!! '+url)
 						waf.add(url)
 
-			
+
 
 def main():
-	for i in range(1,50):
+	for i in range(1,5):
 		search('inurl:.php?id=256',i)
 		for i in range(10):
 			t = threading.Thread(target=scan)
 			t.start()
 	print("[*]Scan End!!!")
-	print("[*]Find",len(sql))
+	print("[*]Find "+len(sql))
 	for i in sql:
-		print('[*]'+i)
-	print("[-]Waf May Be Active",len(waf))
+		print('[!]'+i)
+	print("[-]Waf May Be Active "+len(waf))
 	for i in waf:
-		print('[-]'+i)
-	
-	
+		print('[!]'+i)
+
+
 if __name__ == '__main__':
 	main()
