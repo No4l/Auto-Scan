@@ -10,15 +10,19 @@ import sys
 
 #SQL注入主程序
 def Scan(url):
+    print('Scan ' + url + '...')
     if 'http' not in url:
         url = 'http://' + url
     params = url.split('?')[1].split('&')
-    origin = len(requests.get(url,timeout=0.5).text)
-    for i in params:
-        if sqlTrue(url,origin,i):
-            if sqlFalse(url,origin,i):
-                print('[!!] Find Injection：'+ url+' Param: '+i)
-
+    try:
+        origin = len(requests.get(url,timeout=0.5).text)
+        for i in params:
+            if sqlTrue(url,origin,i):
+                if sqlFalse(url,origin,i):
+                    print('[!!] Find Injection：'+ url+' Param: '+i)
+    except:
+        print("[-]Connetcion Error!")
+    print('[+]Scan End.')
 
 #输出正常的SQL注入语句
 def sqlTrue(url,origin,param):
