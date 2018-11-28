@@ -2,13 +2,19 @@
 # -*- coding: utf-8 -*-
 #主程序
 import sys
-from load import load
+import threading
+from load import *
+from queue import Queue
 
-def load_poc(pocname):
-    p1 = __import__('sql.Get_sql')
-    p1 = getattr(p1,pocname)
-    b = p1()
-    b.scan()
+q = Queue()
+
+def start_scan(poc_class):
+    while not q.empty():
+        target = q.get()
+        #pong.scan(target)
+        poc_class.scan(target)
+
+
 if __name__ == '__main__':
     try:
         file = sys.argv[1]
@@ -16,4 +22,11 @@ if __name__ == '__main__':
     except:
         print('[Usage]'+sys.argv[0]+' <target_file> <pocname>')
         exit()
-    load_poc('Get_sql')
+    target = loadFile(file)
+    for i in target:
+        q.put(i)
+    poc_class = loadPoc(pocname)
+    pong = poc_class()
+    for i in range(10):
+        t = threading.Thread(target=start_scan,args=(pong,))
+        t.start()

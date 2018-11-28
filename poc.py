@@ -16,4 +16,4 @@ class Poc(ABC):
 
     #抽象方法，继承的类需要实现
     @abstractmethod
-    def scan(self): pass
+    def scan(self,url): pass
