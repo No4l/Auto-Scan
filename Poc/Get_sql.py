@@ -21,7 +21,8 @@ class Get_sql(Poc):
                     if self.sqlTrue(url,origin,i):
                         print('[!!] Find Injection：'+ url+' Param: '+i)
         except:
-            print("[-]Connetcion Error!")
+            print("[-]Connetcion Error! " + url)
+            pass
 
     #输出正常的SQL注入语句
     def sqlTrue(self,url,origin,param):
@@ -31,7 +32,7 @@ class Get_sql(Poc):
             length = len(requests.get(url.replace(param,param+i),timeout=0.5,headers=self.header).text)
             if origin-30 <= length <= origin+30:
                 right_count += 1
-        print("True: "+str(right_count))
+        #print("True: "+str(right_count))
         if right_count >= 2:
             return 1
         return 0
@@ -45,7 +46,7 @@ class Get_sql(Poc):
             #print(url.replace(param,param+i))
             if length != origin:
                 error_count += 1
-        print("False: "+str(error_count))
+        #print("False: "+str(error_count))
         if error_count >= 2:
             return 1
         return 0
