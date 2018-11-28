@@ -94,8 +94,8 @@ def scan():
 
 
 def main():
-	for i in range(1,15):
-		search('inurl:.php?id=164',i)
+	for i in range(1,20):
+		search('inurl:.php?cid=172',i)
 		for i in range(10):
 			t = threading.Thread(target=scan)
 			t.start()
