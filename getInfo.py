@@ -7,7 +7,6 @@ import sys
 
 
 q = Queue()
-p = Queue()
 '''
 从目标文件中读取指定条数的链接
 '''
@@ -49,12 +48,13 @@ def get_php(target):
 def scan_thread():
     while not q.empty():
         target = q.get()
-        if get_php(target):
-            info_scan(target)
+        get_php(target)
+        #if get_php(target):
+            #info_scan(target)
 
 '''
 get infosec
-'''
+
 def info_scan(target):
     try:
         res = requests.get(target+'/robots.txt',timeout=1)
@@ -62,13 +62,13 @@ def info_scan(target):
         return
     if res.status_code == 200 and 'User-agent' in res.text:
         print('[INFO]robots find...,'+target+'robots.txt')
-
+'''
 
 
 
 
 if __name__ == '__main__':
-    target = load_file('butian.txt',100,200)
-    for i in range(10):
+    target = load_file('butian.txt',200,500)
+    for i in range(20):
         t1 = threading.Thread(target=scan_thread)
         t1.start()
