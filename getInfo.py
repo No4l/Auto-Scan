@@ -5,7 +5,7 @@ import threading
 import requests
 import sys
 
-
+ThinkPHP = set()
 q = Queue()
 '''
 从目标文件中读取指定条数的链接
@@ -32,7 +32,7 @@ def get_php(target):
             print('[PHP]PHP Find... '+target)
             if 'ThinkPHP' in res.headers['X-Powered-By']:
                 print('[PHP]ThinkPHP Find... '+target)
-            return 1
+                return 1
     else:
             try:
                 res = requests.get(target+'/index.php',timeout=1,allow_redirects=False)
@@ -41,16 +41,17 @@ def get_php(target):
                 return
             if res.status_code == 200 and (now+100)>=origin:
                 print('[PHP]PHP Find... '+target)
-                return 1
 '''
 开始扫描
 '''
 def scan_thread():
     while not q.empty():
         target = q.get()
-        get_php(target)
+        if get_php(target):
+            ThinkPHP.add(target)
         #if get_php(target):
             #info_scan(target)
+
 
 '''
 get infosec
@@ -68,7 +69,7 @@ def info_scan(target):
 
 
 if __name__ == '__main__':
-    target = load_file('butian.txt',200,500)
+    target = load_file('butian.txt',450,500)
     for i in range(20):
         t1 = threading.Thread(target=scan_thread)
         t1.start()
